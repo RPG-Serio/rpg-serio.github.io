@@ -1,0 +1,5 @@
+{
+  "image": "https://via.placeholder.com/1200x800?text=World+Map",
+  "alt": "Campaign world map",
+  "description": "High-level map of the campaign world. Replace the URL in data/map.json with your map image."
+}

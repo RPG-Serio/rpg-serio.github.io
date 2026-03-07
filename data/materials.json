@@ -1,0 +1,14 @@
+[
+  {
+    "title": "Session Notes: Whispering Keep",
+    "description": "Detailed notes and handouts for session 1.",
+    "pdf": "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
+    "image": "https://via.placeholder.com/400x250?text=Handout"
+  },
+  {
+    "title": "World Guide — Northern Marshes",
+    "description": "Background lore for the northern marsh region.",
+    "pdf": "https://www.orimi.com/pdf-test.pdf",
+    "image": "https://via.placeholder.com/400x250?text=Guide"
+  }
+]

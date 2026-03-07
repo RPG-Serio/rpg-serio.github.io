@@ -1,0 +1,42 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+*.swp
+*.swo
+*~
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# Node.js (if applicable)
+node_modules/
+npm-debug.log
+yarn-error.log
+package-lock.json
+
+# Python (if applicable)
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+env/
+
+# Ruby (if applicable)
+Gemfile.lock
+.bundle/
+
+# Build artifacts
+dist/
+build/
+*.log
+
+# IDE
+.DS_Store
+Thumbs.db
+
+# Environment variables
+.env
+.env.local

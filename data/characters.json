@@ -1,0 +1,14 @@
+[
+  {
+    "name": "Thalia Moonshadow",
+    "player": "Ari",
+    "bio": "Half-elf ranger who grew up on the northern marshes.",
+    "portrait": "https://via.placeholder.com/300x300?text=Thalia"
+  },
+  {
+    "name": "Borin Stonehelm",
+    "player": "Marco",
+    "bio": "Dwarf fighter and ex-guard of Greyfen.",
+    "portrait": "https://via.placeholder.com/300x300?text=Borin"
+  }
+]

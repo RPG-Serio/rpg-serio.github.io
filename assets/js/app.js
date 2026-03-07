@@ -37,6 +37,11 @@ function renderTopnav(){
   routes.forEach(r=> tn.appendChild(navLink(r)));
 }
 
+function animateCards(container){
+  const cards = container.querySelectorAll('.card');
+  cards.forEach((c,i)=>{c.classList.add('card-animate'); c.style.animationDelay=`${i*0.06}s`;});
+}
+
 async function render(){
   renderSidebar(); renderTopnav();
   qs('#page-title').textContent = STATE.current[0].toUpperCase()+STATE.current.slice(1);
@@ -67,26 +72,37 @@ async function renderSessions(container){
     grid.appendChild(c);
   });
   container.appendChild(grid);
+  animateCards(container);
 }
 
 async function renderMap(container){
   const d = await fetchJson('data/map.json') || {};
-  const c = document.createElement('div'); c.className='card';
+  // ensure we only have one map card in the container (avoid duplicates on reload)
+  const existing = container.querySelector('#map-card');
+  if(existing) existing.remove();
+  const c = document.createElement('div'); c.className='card'; c.id = 'map-card';
   if(d.image) { const img = document.createElement('img'); img.src = d.image; img.alt = d.alt||'Map'; img.className='thumb'; c.appendChild(img); }
   if(d.description) { const p = document.createElement('p'); p.textContent = d.description; c.appendChild(p);} 
   container.appendChild(c);
+  animateCards(container);
 }
 
 async function renderMaterials(container){
   const items = await fetchJson('data/materials.json') || [];
+  // remove any existing materials grid to prevent duplicates
+  const existingGrid = container.querySelector('#materials-grid');
+  if(existingGrid) existingGrid.remove();
+  const grid = document.createElement('div'); grid.className='grid'; grid.id = 'materials-grid';
   items.forEach(m=>{
     const c = document.createElement('div'); c.className='card';
     const h = document.createElement('h3'); h.textContent = m.title; c.appendChild(h);
     if(m.image){ const img = document.createElement('img'); img.src = m.image; img.className='thumb'; c.appendChild(img); }
     if(m.description){ const p = document.createElement('p'); p.textContent = m.description; c.appendChild(p); }
     if(m.pdf){ const a = document.createElement('a'); a.href = m.pdf; a.textContent = 'Download PDF'; a.className='material-link'; a.target='_blank'; c.appendChild(a); }
-    container.appendChild(c);
+    grid.appendChild(c);
   });
+  container.appendChild(grid);
+  animateCards(container);
 }
 
 async function renderHistory(container){
@@ -97,6 +113,7 @@ async function renderHistory(container){
     if(h.text){ const p = document.createElement('p'); p.textContent = h.text; c.appendChild(p); }
     container.appendChild(c);
   });
+  animateCards(container);
 }
 
 async function renderCities(container){
@@ -110,6 +127,7 @@ async function renderCities(container){
     grid.appendChild(c);
   });
   container.appendChild(grid);
+  animateCards(container);
 }
 
 async function renderRegions(container){
@@ -121,6 +139,7 @@ async function renderRegions(container){
     if(r.desc){ const p2 = document.createElement('p'); p2.textContent = r.desc; c.appendChild(p2); }
     container.appendChild(c);
   });
+  animateCards(container);
 }
 
 async function renderGods(container){
@@ -132,6 +151,7 @@ async function renderGods(container){
     if(g.desc){ const p = document.createElement('p'); p.textContent = g.desc; c.appendChild(p); }
     container.appendChild(c);
   });
+  animateCards(container);
 }
 
 async function renderCharacters(container){
@@ -146,6 +166,7 @@ async function renderCharacters(container){
     grid.appendChild(c);
   });
   container.appendChild(grid);
+  animateCards(container);
 }
 
 function init(){

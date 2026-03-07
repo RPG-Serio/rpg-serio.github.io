@@ -58,7 +58,14 @@ async function render(){
   }
 }
 
-function setRoute(r){STATE.current=r; location.hash = '#'+r; render();}
+function setRoute(r){
+  // update desired route and change the hash — the 'hashchange' handler
+  // will perform the actual render. This avoids double-rendering when
+  // both onclick and the hashchange event would trigger renders.
+  if(STATE.current === r) return;
+  STATE.current = r;
+  location.hash = '#'+r;
+}
 
 async function renderSessions(container){
   const data = await fetchJson('data/sessions.json') || [];

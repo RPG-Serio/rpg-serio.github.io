@@ -1,4 +1,24 @@
 [
-  {"name":"Althar","domain":"Nature, Growth","desc":"A kindly god worshipped by farmers."},
-  {"name":"Vorrun","domain":"War, Trickery","desc":"A capricious deity of mercenaries and rogues."}
+  {"name":"Mystra","domain":"Magia","desc":"Deusa da magia, guardiã do Weave e dos conjuradores."},
+  {"name":"Tyr","domain":"Justiça","desc":"Deus da justiça e da lei, patrono de juízes e paladinos."},
+  {"name":"Torm","domain":"Dever, Retidão","desc":"Campeão da coragem e do auto-sacrifício, defensor dos que seguem o bem e a lei."},
+  {"name":"Helm","domain":"Guardiões, Proteção","desc":"Deidade vigia e guardiã, protetora dos que vigiam."},
+  {"name":"Lathander","domain":"Aurora, Renovação","desc":"Deus do nascimento, renovação e criatividade; arauto de novos começos."},
+  {"name":"Selûne","domain":"Lua, Navegação","desc":"Deusa da lua, orientação e dos ciclos do destino."},
+  {"name":"Shar","domain":"Escuridão, Perda","desc":"Deusa da escuridão, dos segredos e da noite; senhora da perda e do esquecimento."},
+  {"name":"Chauntea","domain":"Natureza, Agricultura","desc":"Grande deusa da agricultura, das colheitas e da terra que nutre."},
+  {"name":"Silvanus","domain":"Natureza Selvagem","desc":"Guardião do equilíbrio natural, protetor de florestas e bestas."},
+  {"name":"Mielikki","domain":"Florestas, Patrulheiros","desc":"Deusa das florestas e dos patrulheiros; patrona dos que vivem e protegem as florestas."},
+  {"name":"Corellon Larethian","domain":"Elfos, Arte","desc":"Patrono dos elfos, da criatividade, da beleza e da habilidade marcial."},
+  {"name":"Moradin","domain":"Anões, Forja","desc":"Pai ancestral dos anões, patrono da forja e da criação."},
+  {"name":"Oghma","domain":"Conhecimento, Inspiração","desc":"Deus do conhecimento, da invenção e da inspiração para registrar ideias."},
+  {"name":"Bane","domain":"Tirania, Conquista","desc":"Deus sombrio da dominação e do medo; busca ordem através do controle."},
+  {"name":"Bhaal","domain":"Assassinato","desc":"Deus implacável do assassinato, da violência e de conspirações mortais."},
+  {"name":"Cyric","domain":"Engano, Conflito","desc":"Deus caótico das mentiras, intrigas e mudanças súbitas."},
+  {"name":"Lolth","domain":"Aranhas, Escuridão","desc":"Deusa drow das aranhas, da traição e dos salões sombrios do Subterrâneo."},
+  {"name":"Tempus","domain":"Guerra","desc":"Deus da batalha e do valor, venerado por soldados e mercenários."},
+  {"name":"Sune","domain":"Amor, Beleza","desc":"Deusa do amor, da paixão e da beleza artística."},
+  {"name":"Gond","domain":"Ofício, Invenção","desc":"Deus inventor de artesãos, engenheiros e engenhocas maravilhosas."},
+  {"name":"Kelemvor","domain":"Morte, Julgamento","desc":"Senhor dos mortos que julga as almas e mantém o equilíbrio dos falecidos."},
+  {"name":"Azuth","domain":"Magos, Feitiçaria","desc":"Deus menor dos magos e do estudo do arcano; guardião das tradições mágicas."}
 ]

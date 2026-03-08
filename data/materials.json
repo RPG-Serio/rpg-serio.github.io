@@ -4,5 +4,17 @@
     "description": "Livro base usado para as sessões!",
     "pdf": "materials/D&D 5E Player's Handbook.pdf",
     "image": "img/playershandbook.jpg"
+  },
+  {
+    "title": "Livro de Monstros D&D 5E",
+    "description": "Livro sobre os monstros do jogo!",
+    "pdf": "materials/D&D 5E - Manual dos Monstros.pdf",
+    "image": "img/monstermanual.jpg"
+  },
+  {
+    "title": "Auxílio Construção de Personagem D&D 5E",
+    "description": "Material para auxílio na criação de personagens.",
+    "pdf": "materials/D&D 5E Criação de Personagem.pdf",
+    "image": "img/character.png"
   }
 ]

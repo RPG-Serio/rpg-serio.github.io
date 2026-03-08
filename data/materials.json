@@ -16,5 +16,11 @@
     "description": "Material para auxílio na criação de personagens.",
     "pdf": "materials/D&D 5E Criação de Personagem.pdf",
     "image": "img/character.png"
+  },
+  {
+    "title": "Ficha Base Preenchível D&D 5E",
+    "description": "Ficha preenchível para facilitar a criação de personagens.",
+    "pdf": "materials/Ficha-Base-Completa-e-Preenchivel.pdf",
+    "image": "img/ficha.png"
   }
 ]

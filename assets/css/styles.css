@@ -220,6 +220,17 @@ body::after{
   box-shadow:0 0 16px var(--accent-glow);
 }
 
+/* ── Magics search UI ── */
+.magics-controls{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.magics-controls .search-input{flex:1;min-width:180px;padding:10px 12px;border-radius:8px;border:1px solid var(--card-border);background:var(--glass);color:var(--text)}
+.magics-controls .select-filter{padding:8px 10px;border-radius:8px;border:1px solid var(--card-border);background:transparent;color:var(--text)}
+.btn{padding:8px 12px;border-radius:8px;border:1px solid var(--card-border);background:transparent;color:var(--accent);cursor:pointer}
+.btn:disabled{opacity:0.5;cursor:default}
+.magic-card .magic-meta{margin-bottom:8px}
+.magic-details{margin-top:8px;padding-top:8px;border-top:1px dashed rgba(255,255,255,0.03)}
+.magic-card .btn{position:absolute;right:12px;top:12px;padding:6px 10px}
+
+
 /* ── Muted text ── */
 .muted{color:var(--muted);font-size:0.9rem;line-height:1.5}
 

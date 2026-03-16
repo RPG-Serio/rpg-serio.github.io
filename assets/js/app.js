@@ -1,5 +1,5 @@
 const STATE = {current: 'sessions'};
-const routes = ['sessions','map','materials','history','cities','regions','gods','characters'];
+const routes = ['sessions','map','materials','history','cities','regions','gods','characters','magics'];
 
 function qs(sel){return document.querySelector(sel)}
 function navLink(name){
@@ -55,7 +55,140 @@ async function render(){
     case 'regions': return renderRegions(content);
     case 'gods': return renderGods(content);
     case 'characters': return renderCharacters(content);
+    case 'magics': return renderMagics(content);
   }
+}
+
+// -- Magics (D&D 5e API) --
+const DND_API = 'https://www.dnd5eapi.co/api';
+const spellDetailsCache = new Map();
+
+async function fetchSpellList(){
+  try{
+    const res = await fetch(`${DND_API}/spells`);
+    if(!res.ok) return [];
+    const json = await res.json();
+    return json.results || [];
+  }catch(e){ return [] }
+}
+
+async function fetchSpellDetails(index){
+  if(spellDetailsCache.has(index)) return spellDetailsCache.get(index);
+  try{
+    const res = await fetch(`${DND_API}/spells/${index}`);
+    if(!res.ok) return null;
+    const json = await res.json();
+    spellDetailsCache.set(index,json);
+    return json;
+  }catch(e){ return null }
+}
+
+function createMagicsControls(){
+  const wrap = document.createElement('div'); wrap.className='magics-controls card';
+  const search = document.createElement('input'); search.placeholder='Search spells by name...'; search.className='search-input';
+  const levelSel = document.createElement('select'); levelSel.className='select-filter';
+  const schoolSel = document.createElement('select'); schoolSel.className='select-filter';
+  const fetchDetailsBtn = document.createElement('button'); fetchDetailsBtn.className='btn'; fetchDetailsBtn.textContent='Fetch details for visible';
+
+  levelSel.innerHTML = `<option value="">All Levels</option>` + Array.from({length:10}).map((_,i)=>`<option value="${i}">${i}</option>`).join('');
+  schoolSel.innerHTML = `<option value="">All Schools</option>`;
+
+  wrap.appendChild(search);
+  wrap.appendChild(levelSel);
+  wrap.appendChild(schoolSel);
+  wrap.appendChild(fetchDetailsBtn);
+
+  return {wrap,search,levelSel,schoolSel,fetchDetailsBtn};
+}
+
+function renderSpellCard(spell,container){
+  const c = document.createElement('div'); c.className='card magic-card';
+  const h = document.createElement('h3'); h.textContent = spell.name; c.appendChild(h);
+  const meta = document.createElement('div'); meta.className='muted magic-meta'; c.appendChild(meta);
+  const btn = document.createElement('button'); btn.className='magic-toggle btn'; btn.textContent='Details';
+  c.appendChild(btn);
+  const detailsPane = document.createElement('div'); detailsPane.className='magic-details'; c.appendChild(detailsPane);
+
+  let detailsLoaded = false;
+  btn.onclick = async ()=>{
+    if(detailsLoaded){ detailsPane.innerHTML=''; detailsLoaded=false; btn.textContent='Details'; return; }
+    btn.disabled = true; btn.textContent='Loading...';
+    const d = await fetchSpellDetails(spell.index);
+    btn.disabled = false; detailsLoaded = !!d; btn.textContent = detailsLoaded?'Hide':'Details';
+    if(!d){ detailsPane.textContent='(failed to load details)'; return }
+    meta.textContent = `Level ${d.level} — ${d.school?.name || 'Unknown'}`;
+    const p = document.createElement('div'); p.className='muted';
+    const desc = (d.desc || []).join('\n\n');
+    p.textContent = desc || (d.short_description || 'No description');
+    const classes = (d.classes||[]).map(c=>c.name).join(', ');
+    const more = document.createElement('div'); more.className='muted'; more.textContent = `Classes: ${classes}`;
+    detailsPane.innerHTML='';
+    detailsPane.appendChild(p);
+    detailsPane.appendChild(more);
+  };
+
+  container.appendChild(c);
+}
+
+async function renderMagics(container){
+  container.innerHTML='';
+  const controls = createMagicsControls();
+  container.appendChild(controls.wrap);
+
+  const grid = document.createElement('div'); grid.className='grid'; grid.id='magics-grid';
+  container.appendChild(grid);
+
+  const list = await fetchSpellList();
+  let visible = list.slice();
+
+  function updateGrid(){
+    grid.innerHTML='';
+    visible.forEach(s=> renderSpellCard(s,grid));
+    animateCards(container);
+  }
+
+  function applyFilters(){
+    const q = controls.search.value.trim().toLowerCase();
+    const level = controls.levelSel.value;
+    const school = controls.schoolSel.value;
+    if(!level && !school){
+      visible = list.filter(s=> s.name.toLowerCase().includes(q));
+      updateGrid();
+      return;
+    }
+    // when level or school filter present, ensure details are loaded for candidates
+    const candidates = list.filter(s=> s.name.toLowerCase().includes(q));
+    Promise.all(candidates.map(async s=>{ const d = await fetchSpellDetails(s.index); return {s,d}; }))
+      .then(arr=>{
+        visible = arr.filter(item=>{
+          if(!item.d) return false;
+          if(level && String(item.d.level)!==level) return false;
+          if(school && (item.d.school?.name||'').toLowerCase()!==school) return false;
+          return true;
+        }).map(it=>it.s);
+        updateGrid();
+      });
+  }
+
+  controls.search.addEventListener('input', ()=>{ applyFilters(); });
+  controls.levelSel.addEventListener('change', ()=>{ applyFilters(); });
+  controls.schoolSel.addEventListener('change', ()=>{ applyFilters(); });
+
+  controls.fetchDetailsBtn.addEventListener('click', async ()=>{
+    controls.fetchDetailsBtn.disabled = true; controls.fetchDetailsBtn.textContent='Fetching...';
+    const currentlyVisible = Array.from(grid.querySelectorAll('.card h3')).map(h=>h.textContent);
+    const toFetch = list.filter(s=> currentlyVisible.includes(s.name));
+    await Promise.all(toFetch.map(s=>fetchSpellDetails(s.index)));
+    controls.fetchDetailsBtn.disabled = false; controls.fetchDetailsBtn.textContent='Fetch details for visible';
+    // populate school options from loaded details
+    const schools = new Set();
+    spellDetailsCache.forEach(d=>{ if(d && d.school && d.school.name) schools.add(d.school.name); });
+    const sorted = Array.from(schools).sort();
+    controls.schoolSel.innerHTML = `<option value="">All Schools</option>` + sorted.map(s=>`<option value="${s.toLowerCase()}">${s}</option>`).join('');
+  });
+
+  // show initial list (names only) first
+  updateGrid();
 }
 
 function setRoute(r){

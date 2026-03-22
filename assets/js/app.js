@@ -1,5 +1,5 @@
 const STATE = {current: 'sessions'};
-const routes = ['sessions','map','materials','history','cities','regions','gods','characters','magics'];
+const routes = ['sessions','map','materials','history','cities','gods','characters','magics'];
 
 function qs(sel){return document.querySelector(sel)}
 function navLink(name){
@@ -52,7 +52,6 @@ async function render(){
     case 'materials': return renderMaterials(content);
     case 'history': return renderHistory(content);
     case 'cities': return renderCities(content);
-    case 'regions': return renderRegions(content);
     case 'gods': return renderGods(content);
     case 'characters': return renderCharacters(content);
     case 'magics': return renderMagics(content);
@@ -258,27 +257,39 @@ async function renderHistory(container){
 
 async function renderCities(container){
   const items = await fetchJson('data/cities.json') || [];
-  const grid = document.createElement('div'); grid.className='grid';
+  const grid = document.createElement('div'); grid.className='grid city-grid';
   items.forEach(city=>{
-    const c = document.createElement('div'); c.className='card';
-    const h = document.createElement('h3'); h.textContent = city.name; c.appendChild(h);
-    if(city.image){ const img = document.createElement('img'); img.src = city.image; img.className='thumb'; c.appendChild(img); }
-    if(city.desc){ const p = document.createElement('p'); p.textContent = city.desc; c.appendChild(p); }
+    const c = document.createElement('div'); c.className='card city-card';
+
+    if(city.image){
+      const imgWrap = document.createElement('div'); imgWrap.className='city-card-img';
+      const img = document.createElement('img'); img.src = city.image; img.alt = city.name;
+      imgWrap.appendChild(img);
+      c.appendChild(imgWrap);
+    }
+
+    const body = document.createElement('div'); body.className='city-card-body';
+
+    const h = document.createElement('h3'); h.textContent = city.name;
+    body.appendChild(h);
+
+    const meta = document.createElement('div'); meta.className='city-card-meta';
+    if(city.popSize){
+      const tag = document.createElement('span'); tag.className='city-tag city-tag-pop';
+      tag.textContent = city.popSize;
+      meta.appendChild(tag);
+    }
+    body.appendChild(meta);
+
+    if(city.description){
+      const p = document.createElement('p'); p.textContent = city.description;
+      body.appendChild(p);
+    }
+
+    c.appendChild(body);
     grid.appendChild(c);
   });
   container.appendChild(grid);
-  animateCards(container);
-}
-
-async function renderRegions(container){
-  const items = await fetchJson('data/regions.json') || [];
-  items.forEach(r=>{
-    const c = document.createElement('div'); c.className='card';
-    const h = document.createElement('h3'); h.textContent = r.name; c.appendChild(h);
-    if(r.cities && r.cities.length){ const p = document.createElement('p'); p.textContent = 'Cities: '+r.cities.join(', '); c.appendChild(p); }
-    if(r.desc){ const p2 = document.createElement('p'); p2.textContent = r.desc; c.appendChild(p2); }
-    container.appendChild(c);
-  });
   animateCards(container);
 }
 

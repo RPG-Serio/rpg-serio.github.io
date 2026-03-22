@@ -1,4 +1,24 @@
 [
-  {"name":"Greyfen","desc":"A fortified trade town at the marsh edge.","image":"https://via.placeholder.com/600x300?text=Greyfen"},
-  {"name":"Everspring","desc":"Known for its hot springs and temples.","image":"https://via.placeholder.com/600x300?text=Everspring"}
+  {
+    "name": "Waterdeep",
+    "image": "img/cities/Waterdeep.png",
+    "region": "Costa da Espada",
+    "popSize": "Metrópole (~50,000)",
+    "description": "A cidade de Waterdeep é o maior centro urbano da Costa da Espada. Conhecida como a 'Cidade dos Esplendores', é um caldeirão de culturas, comércio e magia! A cidade é governada por um conselho de nobres, mercadores e magos relevantes. Possui um dos postos mais movimentados do continente, assim como serve como um dos polos comerciais mais relevantes de Faerûn. A arquitetura da cidade é uma mistura de estilos, refletindo a diversidade de seus habitantes."
+  },
+  {
+    "name": "Calimport",
+    "image": "img/cities/Calimport.png",
+    "region": "Calimshan",
+    "popSize": "Metrópole (~20,000)",
+    "description": "Uma cidade portuária localizada na região de Calimshan, focada principalmente no comércio marítimo. Calimport é conhecida por sua arquitetura exótica, e forte comércio de especiarias, tecidos e artefatos mágicos ou não. A cidade é governada por um sultão, e é um importante centro de comércio e cultura na região sul. "
+  },
+  {
+    "name": "Ankhapur",
+    "image": "img/cities/Ankhapur.png",
+    "region": "Chult",
+    "popSize": "Cidade (~1,000)",
+    "description": "Ankhapur é uma cidade localizada na região do The Lake of Steam. A cidade é pequena e é cohecida principalmente pela sua proximidade com o vulcão Arnrock. Ankhapur é governada por um líder local, e recentemente tem sofrido bastante com desaparecimentos e a praga. Dizem que seres têm levado as pessoas para as florestas próximas. Atualmente, a cidade possui um clima de medo e desconfiança, com os moradores evitando sair nos horários noturnos. A cidade é fortemente influenciada pelos Inquisidores da Chama."
+
+  }
 ]

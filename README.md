@@ -1,6 +1,6 @@
 # RPG Master Hub
 
-Static, JSON-driven GitHub Pages site to centralize sessions, materials, history, map, cities, regions, gods and characters.
+Static, JSON-driven GitHub Pages site to centralize sessions, materials, history, map, cities, gods and characters.
 
 How it works
 - All content is defined in `data/*.json` files. Edit those to add or change content.
@@ -13,7 +13,6 @@ Files to edit
 - `data/map.json` — map image
 - `data/history.json` — timeline entries
 - `data/cities.json` — cities
-- `data/regions.json` — regions and city lists
 - `data/gods.json` — gods and deities
 
 Quick preview locally

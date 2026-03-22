@@ -234,6 +234,78 @@ body::after{
 /* ── Muted text ── */
 .muted{color:var(--muted);font-size:0.9rem;line-height:1.5}
 
+/* ── City Cards ── */
+.city-grid{grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:20px}
+
+.city-card{
+  padding:0;
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
+}
+
+.city-card-img{
+  width:100%;
+  height:180px;
+  overflow:hidden;
+  position:relative;
+}
+.city-card-img::after{
+  content:'';
+  position:absolute;
+  bottom:0;left:0;right:0;
+  height:60px;
+  background:linear-gradient(to top, rgba(15,20,40,0.9), transparent);
+}
+.city-card-img img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  transition:transform 0.5s ease;
+}
+.city-card:hover .city-card-img img{
+  transform:scale(1.06);
+}
+
+.city-card-body{
+  padding:18px 20px 20px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+
+.city-card-body h3{
+  font-size:1.2rem;
+  margin-bottom:0;
+}
+
+.city-card-meta{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+}
+
+.city-tag{
+  display:inline-block;
+  padding:4px 12px;
+  border-radius:20px;
+  font-size:0.78rem;
+  font-weight:500;
+  letter-spacing:0.03em;
+}
+.city-tag-pop{
+  background:rgba(240, 192, 96, 0.1);
+  color:var(--gold);
+  border:1px solid rgba(240, 192, 96, 0.18);
+}
+
+.city-card-body p{
+  color:var(--text-dim);
+  line-height:1.7;
+  font-size:0.9rem;
+  margin-top:2px;
+}
+
 /* ── Card entrance animation ── */
 @keyframes cardIn{
   from{opacity:0;transform:translateY(18px) scale(0.97)}

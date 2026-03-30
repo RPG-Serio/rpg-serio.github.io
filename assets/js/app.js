@@ -320,10 +320,42 @@ async function renderCharacters(container){
   animateCards(container);
 }
 
+/* ── Mobile nav helpers ── */
+function openMobileNav(){
+  const nav = qs('#mobile-nav');
+  nav.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeMobileNav(){
+  const nav = qs('#mobile-nav');
+  nav.classList.remove('open');
+  document.body.style.overflow = '';
+}
+function renderMobileNav(){
+  const nav = qs('#mobile-nav');
+  // remove old route links but keep close button
+  nav.querySelectorAll('a').forEach(a => a.remove());
+  routes.forEach(r => {
+    const a = document.createElement('a');
+    a.href = '#' + r;
+    a.textContent = r[0].toUpperCase() + r.slice(1);
+    if(STATE.current === r) a.className = 'active';
+    a.onclick = () => { closeMobileNav(); setRoute(r); };
+    nav.appendChild(a);
+  });
+}
+
 function init(){
   const hash = location.hash.replace('#','') || 'sessions';
   STATE.current = routes.includes(hash)?hash:'sessions';
   window.addEventListener('hashchange', ()=>{ const h = location.hash.replace('#',''); if(routes.includes(h)){STATE.current=h; render();}});
+
+  // hamburger / mobile-nav wiring
+  const menuBtn = qs('#menu-toggle');
+  const closeBtn = qs('#mobile-nav-close');
+  if(menuBtn) menuBtn.addEventListener('click', () => { renderMobileNav(); openMobileNav(); });
+  if(closeBtn) closeBtn.addEventListener('click', closeMobileNav);
+
   render();
 }
 

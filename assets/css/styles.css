@@ -315,11 +315,81 @@ body::after{
   animation:cardIn 0.45s ease-out both;
 }
 
-/* ── Responsive ── */
+/* ── Hamburger button ── */
+.menu-toggle{
+  display:none;
+  background:none;border:none;color:var(--accent);cursor:pointer;
+  padding:6px;border-radius:6px;
+  transition:background 0.2s;
+}
+.menu-toggle:hover{background:rgba(192,132,252,0.12)}
+.menu-toggle svg{display:block}
+
+/* ── Mobile nav overlay ── */
+.mobile-nav{
+  display:none;
+  position:fixed;inset:0;z-index:100;
+  background:rgba(10,14,26,0.97);
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  flex-direction:column;align-items:center;justify-content:center;gap:6px;
+  padding:24px;
+}
+.mobile-nav.open{display:flex}
+.mobile-nav a{
+  display:block;
+  color:var(--text-dim);
+  text-decoration:none;
+  font-family:'Cinzel',serif;
+  font-size:1.25rem;
+  font-weight:600;
+  letter-spacing:0.04em;
+  padding:14px 32px;
+  border-radius:10px;
+  text-align:center;
+  width:100%;max-width:280px;
+  transition:all 0.25s ease;
+}
+.mobile-nav a:hover,
+.mobile-nav a.active{
+  color:#fff;
+  background:linear-gradient(135deg,rgba(192,132,252,0.15),rgba(192,132,252,0.05));
+}
+.mobile-nav .close-btn{
+  position:absolute;top:18px;right:18px;
+  background:none;border:none;color:var(--muted);cursor:pointer;
+  padding:8px;border-radius:6px;
+  transition:color 0.2s;
+}
+.mobile-nav .close-btn:hover{color:var(--accent)}
+.mobile-nav .close-btn svg{display:block}
+
+/* ── Responsive: tablet ── */
 @media(max-width:900px){
   .sidebar{display:none}
-  .topnav{display:flex;flex-wrap:wrap;gap:4px}
-  .topnav a{margin-left:0;margin-right:10px}
+  .menu-toggle{display:block}
+  .topnav{display:none}
+  .topbar{padding:14px 16px}
+  #page-title{font-size:1.3rem}
   .content{padding:16px}
-  .grid{grid-template-columns:1fr}
+  .grid{grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+  .city-grid{grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+}
+
+/* ── Responsive: phone ── */
+@media(max-width:600px){
+  .topbar{padding:12px 12px}
+  #page-title{font-size:1.1rem}
+  .content{padding:12px}
+  .grid,
+  .city-grid{grid-template-columns:1fr}
+  .card{padding:16px;border-radius:10px}
+  .card h3{font-size:1rem}
+  .city-card-img{height:140px}
+  .city-card-body{padding:14px 16px 16px}
+  .magics-controls{flex-direction:column;gap:8px}
+  .magics-controls .search-input{min-width:0;width:100%}
+  .magics-controls .select-filter{width:100%}
+  .magics-controls .btn{width:100%}
+  .material-link{width:100%;justify-content:center}
+  .thumb{border-radius:8px}
 }

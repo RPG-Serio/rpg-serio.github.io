@@ -17,8 +17,14 @@
     "name": "Ankhapur",
     "image": "img/cities/Ankhapur.png",
     "region": "Chult",
-    "popSize": "Cidade (~1,000)",
+    "popSize": "Cidade (~200)",
     "description": "Ankhapur é uma cidade localizada na região do The Lake of Steam. A cidade é pequena e é cohecida principalmente pela sua proximidade com o vulcão Arnrock. Ankhapur é governada por um líder local, e recentemente tem sofrido bastante com desaparecimentos e a praga. Dizem que seres têm levado as pessoas para as florestas próximas. Atualmente, a cidade possui um clima de medo e desconfiança, com os moradores evitando sair nos horários noturnos. A cidade é fortemente influenciada pelos Inquisidores da Chama."
-
+  },
+  {
+    "name": "Saelmur",
+    "image": "img/cities/Saelmur.png",
+    "region": "Chult",
+    "popSize": "Cidade (~500)",
+    "description": "Saelmur é uma cidade localizada na região do The Lake of Steam. Uma cidade também pequena que vive unicamente da atividade costeira. O cheiro de peixe é onipresente. O comércio é voltado principalmente para pesca e venda de produtos artesanais. A cidade é governada pelo líder de Mintar, cidade próxima e um pouco maior. Assim como Ankhapur, a cidade possui uma influência forte da Inquisição da Chama, que acaba também sendo o grupo responsável pela segurança e por manter a ordem no local."
   }
 ]

@@ -19,6 +19,19 @@ async function fetchJson(path){
 function renderSidebar(){
   const sb = qs('#sidebar');
   sb.innerHTML = '';
+
+  const brand = document.createElement('div'); brand.className='brand';
+  const mark = document.createElement('div'); mark.className='brand-mark'; mark.textContent='⚔';
+  const btext = document.createElement('div'); btext.className='brand-text';
+  const bt = document.createElement('span'); bt.className='brand-title'; bt.textContent='Master Hub';
+  const bs = document.createElement('span'); bs.className='brand-sub'; bs.textContent='Crônicas de Faerûn';
+  btext.appendChild(bt); btext.appendChild(bs);
+  brand.appendChild(mark); brand.appendChild(btext);
+  sb.appendChild(brand);
+
+  const label = document.createElement('div'); label.className='sidebar-label'; label.textContent='Navegação';
+  sb.appendChild(label);
+
   const ul = document.createElement('ul'); ul.className='nav-list';
   routes.forEach(r=>{
     const li = document.createElement('li');
@@ -44,6 +57,7 @@ function animateCards(container){
 
 async function render(){
   renderSidebar(); renderTopnav();
+  document.body.dataset.section = STATE.current;
   qs('#page-title').textContent = STATE.current[0].toUpperCase()+STATE.current.slice(1);
   const content = qs('#content'); content.innerHTML='';
   switch(STATE.current){
@@ -345,7 +359,23 @@ function renderMobileNav(){
   });
 }
 
+/* ── Theme toggle ── */
+function applyTheme(theme){
+  document.documentElement.setAttribute('data-theme', theme);
+  try{ localStorage.setItem('theme', theme); }catch(e){}
+}
+function toggleTheme(){
+  const cur = document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+  applyTheme(cur === 'light' ? 'dark' : 'light');
+}
+
 function init(){
+  // theme (default dark; persisted). The inline head script sets it early to avoid flash.
+  const savedTheme = (()=>{ try{ return localStorage.getItem('theme'); }catch(e){ return null; } })();
+  applyTheme(savedTheme === 'light' ? 'light' : 'dark');
+  const themeBtn = qs('#theme-toggle');
+  if(themeBtn) themeBtn.addEventListener('click', toggleTheme);
+
   const hash = location.hash.replace('#','') || 'sessions';
   STATE.current = routes.includes(hash)?hash:'sessions';
   window.addEventListener('hashchange', ()=>{ const h = location.hash.replace('#',''); if(routes.includes(h)){STATE.current=h; render();}});

@@ -1,8 +1,16 @@
-/* ──────────────────────────────────────────────────────────
-   RPG Master Hub — "Arcane Codex" light rebrand
-   ────────────────────────────────────────────────────────── */
+/* ──────────────────────────────────────────────────────────────────────────
+   Crônicas de Faerûn — campaign chronicle
+   Palette is client-specified and unchanged. Personality comes from two
+   places only:
+   · the burn — the hand-shaped mark every renascido carries. It is the brand,
+     it smoulders in the masthead, and it cools from ember to ash down the
+     chronicle, so the newest session is literally the hottest.
+   · the chronicler's hand — a blackletter (Grenze Gotisch) for the headings of
+     the chronicle, Spectral for everything read, Plex Mono for the record
+     layer (dates, DR years, populations, spell levels).
+   ────────────────────────────────────────────────────────────────────────── */
 
-@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@300;400;500;600;700&display=swap');
+@property --burn-r{syntax:'<percentage>';inherits:false;initial-value:100%}
 
 :root{
   /* ---- dark (default) ---- */
@@ -19,30 +27,39 @@
   --series-1:#5a9cf0; --series-2:#2fd39a; --series-3:#f2b73a; --series-4:#3ecf6b;
   --series-5:#9b8bf2; --series-6:#f16b6a; --series-7:#f29ac0; --series-8:#f5814f;
 
-  /* theme-aware surfaces */
-  --topbar-bg: rgba(14,14,12,0.78);
-  --overlay-bg: rgba(14,14,12,0.97);
-  --shadow-sm: 0 1px 2px rgba(0,0,0,0.40), 0 1px 3px rgba(0,0,0,0.35);
-  --shadow-md: 0 8px 22px rgba(0,0,0,0.50), 0 2px 6px rgba(0,0,0,0.40);
-  --shadow-lg: 0 20px 46px rgba(0,0,0,0.60), 0 6px 14px rgba(0,0,0,0.45);
+  /* The burn: amber core (series-3) → ember (series-8) → seared red (series-6, darkened). */
+  --ember-0: var(--series-3);
+  --ember-1: var(--series-8);
+  --ember-2: #d9534f;
+  --ember-3: #7d2b29;
+  --burn-halo:   rgba(245,129,79,0.24);
+  --burn-shadow: rgba(245,129,79,0.45);
 
-  /* shared, theme-independent tokens */
-  --radius: 14px;
-  --radius-sm: 10px;
-  --sidebar-w: 264px;
+  --topbar-bg: rgba(14,14,12,0.80);
+  --overlay-bg: rgba(14,14,12,0.98);
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.40);
 
-  /* current-section accent (set by JS via body[data-section]) */
+  --font-display:'Grenze Gotisch', 'Spectral', Georgia, serif;
+  --font-text:'Spectral', Georgia, 'Times New Roman', serif;
+  --font-mono:'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+
+  --measure: 66ch;
+  --radius: 6px;
+  --radius-sm: 4px;
+  --sidebar-w: 250px;
+  --section-mix: 18%;
   --section: var(--accent);
-  --section-soft: color-mix(in srgb, var(--section) 16%, transparent);
 }
 
-/* ---- light theme (opt-in via toggle) ---- */
+/* ---- light (opt-in via toggle) ---- */
 :root[data-theme="light"]{
   --page:          #f9f9f7;
   --surface-1:     #fcfcfb;
   --text-primary:  #0b0b0b;
   --text-secondary:#52514e;
-  --muted:         #898781;
+  /* palette value #898781 measured 3.50:1 on --surface-1; darkened to clear AA
+     because .muted carries session notes and spell descriptions, not chrome. */
+  --muted:         #6f6d66;
   --grid:          #e1e0d9;
   --axis:          #c3c2b7;
   --border:        rgba(11,11,11,0.10);
@@ -51,114 +68,97 @@
   --series-1:#2a78d6; --series-2:#1baf7a; --series-3:#eda100; --series-4:#008300;
   --series-5:#4a3aa7; --series-6:#e34948; --series-7:#e87ba4; --series-8:#eb6834;
 
-  --topbar-bg: rgba(249,249,247,0.82);
-  --overlay-bg: rgba(249,249,247,0.98);
-  --shadow-sm: 0 1px 2px rgba(11,11,11,0.04), 0 1px 3px rgba(11,11,11,0.05);
-  --shadow-md: 0 6px 18px rgba(11,11,11,0.06), 0 2px 6px rgba(11,11,11,0.05);
-  --shadow-lg: 0 18px 40px rgba(11,11,11,0.10), 0 6px 14px rgba(11,11,11,0.06);
+  /* On paper the burn is a scorch: same core, charred rim instead of a glow. */
+  --ember-2: #a8372f;
+  --ember-3: #3a1a14;
+  --burn-halo:   rgba(235,104,52,0.10);
+  --burn-shadow: transparent;
 
-  --section-soft: color-mix(in srgb, var(--section) 12%, transparent);
+  --topbar-bg: rgba(249,249,247,0.85);
+  --overlay-bg: rgba(249,249,247,0.98);
+  --shadow-sm: 0 1px 2px rgba(11,11,11,0.05);
+  --section-mix: 14%;
 }
 
-/* per-section accent — driven by body[data-section="…"] (adapts to theme) */
-body[data-section="sessions"]  {--section:var(--series-1)}
+/* Section accent marks which part of the chronicle you are in. Sessions take
+   the ember, because the chronicle is the record of the burn. */
+body[data-section="sessions"]  {--section:var(--series-8)}
 body[data-section="map"]       {--section:var(--series-2)}
-body[data-section="materials"] {--section:var(--series-8)}
+body[data-section="materials"] {--section:var(--series-1)}
 body[data-section="history"]   {--section:var(--series-6)}
 body[data-section="cities"]    {--section:var(--series-4)}
 body[data-section="gods"]      {--section:var(--series-3)}
 body[data-section="characters"]{--section:var(--series-7)}
 body[data-section="magics"]    {--section:var(--series-5)}
 
+/* Must be computed on <body>, where --section holds the route colour: a var()
+   inside a custom property resolves on the element that declares it. */
+body{--section-soft:var(--border);--section-ink:var(--section)}
+@supports (color: color-mix(in srgb, red, blue)){
+  body{--section-soft:color-mix(in srgb, var(--section) var(--section-mix), transparent)}
+  /* Light series colours run 2–3.9:1 on paper; darken them wherever they set text. */
+  :root[data-theme="light"] body{--section-ink:color-mix(in oklab, var(--section) 62%, var(--text-primary))}
+}
+
+.ember-0{stop-color:var(--ember-0)}
+.ember-1{stop-color:var(--ember-1)}
+.ember-2{stop-color:var(--ember-2)}
+.ember-3{stop-color:var(--ember-3)}
+
 *{box-sizing:border-box; margin:0; padding:0}
 
-/* ── Scrollbar ── */
 ::-webkit-scrollbar{width:10px;height:10px}
 ::-webkit-scrollbar-track{background:transparent}
 ::-webkit-scrollbar-thumb{background:var(--axis);border-radius:6px;border:3px solid var(--page)}
 ::-webkit-scrollbar-thumb:hover{background:var(--muted)}
-
 ::selection{background:var(--section-soft);color:var(--text-primary)}
 
-/* ── Body & Background ── */
 body{
-  margin:0;
-  font-family:'Inter', system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-family:var(--font-text);
   color:var(--text-primary);
   background:var(--page);
   min-height:100vh;
   overflow-x:hidden;
   -webkit-font-smoothing:antialiased;
-  text-rendering:optimizeLegibility;
 }
-/* faint editorial texture: dotted grid wash */
-body::before{
-  content:'';position:fixed;inset:0;z-index:-1;pointer-events:none;
-  background-image:radial-gradient(var(--grid) 1px, transparent 1px);
-  background-size:22px 22px;
-  opacity:0.5;
-  -webkit-mask-image:radial-gradient(ellipse 90% 70% at 50% 0%, #000 30%, transparent 80%);
-          mask-image:radial-gradient(ellipse 90% 70% at 50% 0%, #000 30%, transparent 80%);
+
+:focus-visible{outline:2px solid var(--section);outline-offset:2px;border-radius:3px}
+
+.skip-link{
+  position:absolute;left:-9999px;top:8px;z-index:200;
+  background:var(--surface-1);color:var(--text-primary);
+  padding:10px 16px;border:1px solid var(--border);border-radius:var(--radius-sm);
+  font-size:0.95rem;font-weight:600;
 }
+.skip-link:focus{left:8px}
+
+.sprite{position:absolute;width:0;height:0;overflow:hidden}
+.nowrap{white-space:nowrap}
 
 /* ── Layout ── */
 .app{display:flex;min-height:100vh}
 
-/* ── Sidebar ── */
 .sidebar{
-  width:var(--sidebar-w);
-  flex-shrink:0;
+  width:var(--sidebar-w);flex-shrink:0;
   background:var(--surface-1);
-  padding:22px 16px;
+  padding:22px 14px;
   border-right:1px solid var(--border);
-  position:sticky;
-  top:0;
-  height:100vh;
-  overflow-y:auto;
-  display:flex;
-  flex-direction:column;
-  gap:8px;
+  position:sticky;top:0;height:100vh;overflow-y:auto;
+  display:flex;flex-direction:column;gap:6px;
 }
 
-/* Brand mark (injected by JS) */
-.brand{
-  display:flex;align-items:center;gap:12px;
-  padding:8px 12px 18px;
-  margin-bottom:6px;
-  border-bottom:1px solid var(--border);
-}
-.brand-mark{
-  width:40px;height:40px;flex-shrink:0;
-  border-radius:11px;
-  display:grid;place-items:center;
-  color:#fff;
-  background:linear-gradient(150deg, var(--series-5), var(--series-1));
-  box-shadow:var(--shadow-sm);
-  font-family:'Fraunces',serif;font-weight:600;font-size:1.15rem;
-}
-.brand-text{display:flex;flex-direction:column;line-height:1.15}
-.brand-title{
-  font-family:'Fraunces',serif;font-weight:600;font-size:1.02rem;
-  color:var(--text-primary);letter-spacing:0.01em;
-}
-.brand-sub{
-  font-size:0.68rem;letter-spacing:0.16em;text-transform:uppercase;
-  color:var(--muted);font-weight:600;margin-top:2px;
-}
+.brand{display:flex;align-items:center;gap:12px;padding:6px 10px 20px;border-bottom:1px solid var(--border);margin-bottom:14px}
+.brand-mark{width:34px;height:34px;flex-shrink:0}
+.brand-mark svg{width:100%;height:100%;display:block;fill:url(#ember-fill);filter:drop-shadow(0 0 5px var(--burn-shadow))}
+.brand-text{display:flex;flex-direction:column;line-height:1.1;min-width:0}
+.brand-title{font-family:var(--font-display);font-weight:600;font-size:1.36rem;color:var(--text-primary)}
+.brand-sub{font-family:var(--font-mono);font-size:0.66rem;letter-spacing:0.08em;color:var(--muted);margin-top:4px}
 
-.sidebar-label{
-  font-size:0.66rem;letter-spacing:0.16em;text-transform:uppercase;
-  color:var(--muted);font-weight:600;
-  padding:4px 14px 6px;
-}
-
-/* ── Main ── */
 .main{flex:1;display:flex;flex-direction:column;min-width:0}
 
-/* ── Topbar ── */
 .topbar{
   display:flex;align-items:center;justify-content:space-between;gap:16px;
-  padding:20px 40px;
+  padding:15px 36px;
   border-bottom:1px solid var(--border);
   background:var(--topbar-bg);
   backdrop-filter:saturate(140%) blur(10px);
@@ -166,395 +166,350 @@ body::before{
   position:sticky;top:0;z-index:20;
 }
 #page-title{
-  font-family:'Fraunces', serif;
-  font-weight:600;
-  font-size:1.7rem;
-  letter-spacing:-0.01em;
+  font-family:var(--font-display);font-weight:600;font-size:1.65rem;line-height:1;
   color:var(--text-primary);
-  display:flex;align-items:center;gap:14px;
 }
-#page-title::before{
-  content:'';width:10px;height:10px;border-radius:50%;
-  background:var(--section);
-  box-shadow:0 0 0 4px var(--section-soft);
-}
-.topnav{display:flex;align-items:center;flex-wrap:wrap;gap:2px}
+.topbar-actions{display:flex;align-items:center;gap:8px}
+.topnav{display:flex;align-items:center;flex-wrap:wrap;gap:1px}
 .topnav a{
-  color:var(--text-secondary);
-  text-decoration:none;
-  font-size:0.82rem;
-  font-weight:500;
-  letter-spacing:0.02em;
-  padding:7px 12px;
-  border-radius:8px;
-  transition:color 0.2s, background 0.2s;
+  color:var(--text-secondary);text-decoration:none;
+  font-size:0.92rem;padding:6px 10px;border-radius:var(--radius-sm);
+  transition:color 0.18s, background 0.18s;
 }
 .topnav a:hover{color:var(--text-primary);background:var(--grid)}
+.topnav a.active{color:var(--text-primary);font-weight:600;box-shadow:inset 0 -2px 0 var(--section)}
 
-/* ── Content ── */
-.content{
-  padding:32px 40px 64px;
-  max-width:1180px;
-  width:100%;
-  margin:0 auto;
-}
+.content{padding:36px 36px 88px;max-width:1120px;width:100%;margin:0 auto}
+.content:focus{outline:none}
 
-/* ── Navigation list (sidebar) ── */
-.nav-list{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:2px}
-.nav-list li{margin:0}
+/* ── Sidebar nav ── */
+.nav-list{list-style:none;display:flex;flex-direction:column;gap:1px}
 .nav-list a{
-  display:flex;align-items:center;gap:12px;
-  color:var(--text-secondary);
-  padding:10px 14px;
-  text-decoration:none;
-  border-radius:10px;
-  font-size:0.92rem;
-  font-weight:500;
-  letter-spacing:0.01em;
-  transition:background 0.18s ease, color 0.18s ease;
-  position:relative;
+  display:block;color:var(--text-secondary);
+  padding:8px 12px 8px 13px;text-decoration:none;
+  border-radius:var(--radius-sm);font-size:1.02rem;
+  border-left:3px solid transparent;
+  transition:background 0.16s, color 0.16s;
 }
-/* colored dot per route */
-.nav-list a::before{
-  content:'';width:8px;height:8px;border-radius:50%;flex-shrink:0;
-  background:var(--dot, var(--axis));
-  transition:transform 0.18s ease, box-shadow 0.18s ease;
-}
-.nav-list a[href="#sessions"]  {--dot:var(--series-1)}
-.nav-list a[href="#map"]       {--dot:var(--series-2)}
-.nav-list a[href="#materials"] {--dot:var(--series-8)}
-.nav-list a[href="#history"]   {--dot:var(--series-6)}
-.nav-list a[href="#cities"]    {--dot:var(--series-4)}
-.nav-list a[href="#gods"]      {--dot:var(--series-3)}
-.nav-list a[href="#characters"]{--dot:var(--series-7)}
-.nav-list a[href="#magics"]    {--dot:var(--series-5)}
-
-.nav-list a:hover{
-  color:var(--text-primary);
-  background:var(--page);
-}
-.nav-list a:hover::before{transform:scale(1.25)}
+.nav-list a:hover{color:var(--text-primary);background:var(--grid)}
 .nav-list a.active{
-  color:var(--text-primary);
-  background:var(--page);
-  font-weight:600;
-  box-shadow:inset 0 0 0 1px var(--border);
-}
-.nav-list a.active::before{
-  box-shadow:0 0 0 4px var(--dot, var(--axis));
-  filter:none;
-  background:var(--dot, var(--axis));
-  transform:scale(0.7);
+  color:var(--text-primary);background:var(--grid);
+  font-weight:600;border-left-color:var(--section);
 }
 
-/* ── Cards ── */
-.card{
-  background:var(--surface-1);
-  padding:22px 24px;
-  border-radius:var(--radius);
-  margin-bottom:18px;
-  border:1px solid var(--border);
-  box-shadow:var(--shadow-sm);
-  transition:transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
-  position:relative;
-  overflow:hidden;
+/* ── Shared type utilities ── */
+.eyebrow{
+  font-family:var(--font-mono);font-size:0.68rem;letter-spacing:0.11em;
+  text-transform:uppercase;color:var(--muted);
 }
-/* accent hairline on top */
-.card::before{
-  content:'';position:absolute;top:0;left:0;right:0;height:3px;
-  background:var(--section);
-  opacity:0;transition:opacity 0.22s ease;
+.datum{font-family:var(--font-mono);font-size:0.76rem;color:var(--text-secondary);font-variant-numeric:tabular-nums}
+.prose{
+  font-size:1.0625rem;line-height:1.75;
+  color:var(--text-secondary);max-width:var(--measure);
 }
-.card:hover{
-  transform:translateY(-3px);
-  box-shadow:var(--shadow-md);
-  border-color:var(--section-soft);
-}
-.card:hover::before{opacity:0.85}
-.card h3{
-  font-family:'Fraunces', serif;
-  font-weight:600;
-  font-size:1.22rem;
-  line-height:1.25;
-  letter-spacing:-0.005em;
-  margin-bottom:10px;
-  color:var(--text-primary);
-}
-.card h4{
-  font-family:'Fraunces', serif;
-  font-weight:600;
-  font-size:1.05rem;
-  margin-bottom:8px;
-  color:var(--text-primary);
-}
-.card p{
-  color:var(--text-secondary);
-  line-height:1.7;
-  font-size:0.94rem;
-  margin-top:8px;
-}
-/* history dates / small headings colored */
-.card h4{color:var(--text-primary)}
+.prose + .prose{margin-top:0.9em}
+.lede{font-size:1.1rem;line-height:1.7;color:var(--text-secondary);max-width:var(--measure);margin-bottom:34px}
 
-/* ── Grid ── */
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px}
+/* Chapter heads: the blackletter's second job after the masthead. */
+.group-head{display:flex;align-items:baseline;gap:12px;margin-bottom:20px;padding-bottom:9px;border-bottom:1px solid var(--border)}
+.group-head h3{font-family:var(--font-display);font-weight:600;font-size:1.7rem;line-height:1.05;color:var(--text-primary)}
+.group-head .count{font-family:var(--font-mono);font-size:0.7rem;color:var(--muted);margin-left:auto;white-space:nowrap}
 
-/* ── Thumbnails ── */
-.thumb{
-  display:block;
-  max-width:100%;height:auto;border-radius:var(--radius-sm);
-  border:1px solid var(--border);
-  margin:4px 0 10px;
-  transition:transform 0.35s ease, box-shadow 0.35s ease;
+/* ── Masthead (the thesis) ── */
+.masthead{
+  border-bottom:1px solid var(--border);
+  padding-bottom:30px;margin-bottom:48px;
 }
-.thumb:hover{
-  transform:scale(1.01);
-  box-shadow:var(--shadow-md);
+.masthead-era{display:flex;align-items:center;gap:10px;margin-bottom:18px}
+.masthead-era .rule{flex:1;height:1px;background:var(--border)}
+.masthead-body{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:28px;align-items:center}
+/* Set as a title page: two stacked lines, the burn beside them. */
+.masthead h2{
+  font-family:var(--font-display);font-weight:600;
+  font-size:clamp(2.7rem, 7.2vw, 6.1rem);
+  line-height:0.9;color:var(--text-primary);
+  max-width:9.5em;text-wrap:balance;
 }
+.masthead .premise{margin:18px 0 0;font-size:1.14rem}
+.masthead-stats{display:flex;flex-wrap:wrap;gap:8px 22px;margin-top:22px}
+.masthead-stats span{font-family:var(--font-mono);font-size:0.74rem;color:var(--muted);font-variant-numeric:tabular-nums}
+.masthead-stats b{color:var(--text-primary);font-weight:500}
 
-/* ── Material link ── */
-.material-link{
-  display:inline-flex;align-items:center;gap:8px;
-  color:#fff;font-weight:600;font-size:0.86rem;
-  text-decoration:none;
-  padding:9px 16px;margin-top:12px;
-  background:var(--section);
-  border:1px solid transparent;
-  border-radius:9px;
-  box-shadow:var(--shadow-sm);
-  transition:filter 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+/* ── The burn ──
+   Two stacked copies of the mark: ash underneath, ember on top. The ember is
+   revealed through a radial mask centred on the palm, so on ignition the burn
+   spreads outward to the fingertips. */
+.burn{
+  position:relative;width:clamp(76px, 17vw, 228px);aspect-ratio:1;
+  margin-right:clamp(0px, 3vw, 48px);
 }
-.material-link::after{content:'↓';font-weight:700}
-.material-link:hover{
-  filter:brightness(1.06);
-  transform:translateY(-1px);
-  box-shadow:var(--shadow-md);
+.burn::before{
+  content:'';position:absolute;inset:-34%;border-radius:50%;
+  background:radial-gradient(closest-side, var(--burn-halo), transparent 75%);
+  animation:smoulder 7s ease-in-out infinite;
+}
+.burn svg{position:absolute;inset:0;width:100%;height:100%;display:block;overflow:visible}
+.burn-ash use{fill:var(--axis)}
+/* 100% of the mask's ray reaches the farthest corner, so the hand is fully
+   lit at --burn-r:100%; starting at -18% hides even the feathered edge. */
+.burn-ember{
+  --burn-r:100%;
+  filter:drop-shadow(0 0 7px var(--burn-shadow));
+  -webkit-mask-image:radial-gradient(circle at 50% 64%, #000 var(--burn-r), transparent calc(var(--burn-r) + 18%));
+          mask-image:radial-gradient(circle at 50% 64%, #000 var(--burn-r), transparent calc(var(--burn-r) + 18%));
+}
+.burn-ember use{fill:url(#ember-fill)}
+.burn.ignite .burn-ember{animation:ignite 2.2s cubic-bezier(0.45,0.05,0.35,1) 0.3s both}
+.burn.ignite::before{animation:halo-in 2.2s ease-out 0.3s both, smoulder 7s ease-in-out 2.5s infinite}
+
+@keyframes ignite{from{--burn-r:-18%}to{--burn-r:100%}}
+@keyframes halo-in{from{opacity:0;transform:scale(0.6)}to{opacity:1;transform:scale(1)}}
+@keyframes smoulder{
+  0%,100%{opacity:1;transform:scale(1)}
+  21%{opacity:0.78;transform:scale(0.97)}
+  38%{opacity:1;transform:scale(1.03)}
+  57%{opacity:0.84;transform:scale(0.99)}
+  76%{opacity:0.96;transform:scale(1.02)}
 }
 
-/* ── Magics search UI ── */
-.magics-controls{
-  display:flex;gap:10px;align-items:center;flex-wrap:wrap;
-  padding:16px 18px;
+/* ── Chronicle (sessions) ──
+   Each mark cools with age: --heat is set per entry (100% newest → 0% oldest)
+   and mixes the ember into ash. */
+.chronicle{list-style:none;position:relative}
+.chronicle::before{
+  content:'';position:absolute;left:17px;top:12px;bottom:12px;width:1px;
+  background:linear-gradient(180deg, var(--series-8), var(--axis) 30%, var(--border) 70%, transparent);
 }
-.magics-controls::before{display:none}
-.magics-controls .search-input{
-  flex:1;min-width:200px;padding:11px 14px;border-radius:9px;
-  border:1px solid var(--border);background:var(--field);color:var(--text-primary);
-  font-size:0.92rem;font-family:inherit;
-  transition:border-color 0.2s, box-shadow 0.2s;
+.entry{position:relative;padding-left:60px;padding-bottom:60px;--heat-color:var(--axis)}
+@supports (color: color-mix(in oklab, red, blue)){
+  .entry{--heat-color:color-mix(in oklab, var(--series-8) var(--heat, 0%), var(--axis))}
 }
-.magics-controls .search-input::placeholder{color:var(--muted)}
-.magics-controls .search-input:focus{
-  outline:none;border-color:var(--section);
-  box-shadow:0 0 0 3px var(--section-soft);
+.entry:last-child{padding-bottom:0}
+.entry-body{min-width:0}
+.entry-marker{position:absolute;left:0;top:2px;width:36px;display:flex;justify-content:center}
+.entry-mark{
+  width:36px;height:36px;border-radius:50%;
+  display:grid;place-items:center;
+  background:var(--page);border:1px solid var(--border);
+  color:var(--heat-color);
 }
-.magics-controls .select-filter{
-  padding:10px 12px;border-radius:9px;border:1px solid var(--border);
-  background:var(--field);color:var(--text-primary);font-size:0.9rem;font-family:inherit;
-  cursor:pointer;transition:border-color 0.2s, box-shadow 0.2s;
+.entry-mark svg{width:19px;height:19px;fill:currentColor}
+.entry:first-child .entry-mark{border-color:var(--series-8);box-shadow:0 0 16px var(--burn-halo), 0 0 0 4px var(--page)}
+.entry:first-child .entry-mark svg{fill:url(#ember-fill)}
+
+.entry-meta{display:flex;align-items:center;flex-wrap:wrap;gap:6px 10px;min-height:20px}
+.entry-meta .sep{color:var(--axis)}
+.entry h3{
+  font-family:var(--font-display);font-weight:600;font-size:2.15rem;
+  line-height:1.05;color:var(--text-primary);margin-top:8px;
+  text-wrap:balance;
 }
-.magics-controls .select-filter:focus{
-  outline:none;border-color:var(--section);box-shadow:0 0 0 3px var(--section-soft);
+.entry figure{margin:20px 0 22px;max-width:640px}
+.entry figure img{width:100%;height:auto;display:block;border-radius:var(--radius);border:1px solid var(--border)}
+.entry .prose{margin-top:16px}
+.latest-flag{
+  font-family:var(--font-mono);font-size:0.62rem;letter-spacing:0.1em;text-transform:uppercase;
+  color:var(--section-ink);border:1px solid var(--section-soft);background:var(--section-soft);
+  padding:2px 8px;border-radius:999px;
 }
+
+/* ── Era groups (history) — deep time, grouped so 1500 DR and -30,000 DR
+      are not presented as equals ── */
+.era{margin-bottom:52px}
+.era:last-child{margin-bottom:0}
+.era-head .eyebrow{white-space:nowrap}
+.era-list{list-style:none;display:flex;flex-direction:column;gap:28px}
+.era-item{display:grid;grid-template-columns:minmax(150px,180px) 1fr;gap:26px}
+.era-year{font-family:var(--font-mono);font-size:0.78rem;color:var(--section-ink);line-height:1.6;padding-top:4px}
+.era-item h4{font-weight:600;font-size:1.18rem;color:var(--text-primary);margin-bottom:8px;line-height:1.3}
+
+/* ── God matrix ── */
+.cluster{margin-bottom:44px}
+.cluster:last-child{margin-bottom:0}
+.god-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:2px;margin-inline:-18px}
+.god{padding:16px 18px;border-radius:var(--radius-sm);background:transparent;transition:background 0.16s}
+.god:hover{background:var(--surface-1)}
+.god h4{font-weight:600;font-size:1.14rem;color:var(--text-primary)}
+.god .domain{margin:5px 0 8px}
+.god p{font-size:0.95rem;line-height:1.6;color:var(--text-secondary)}
+
+/* ── Cities, grouped by region ── */
+.region{margin-bottom:48px}
+.region:last-child{margin-bottom:0}
+.city-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:26px}
+.city{display:flex;flex-direction:column}
+.city-img{
+  width:100%;aspect-ratio:16/10;overflow:hidden;background:var(--grid);
+  border-radius:var(--radius);border:1px solid var(--border);
+}
+.city-img img{width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.5s ease}
+.city:hover .city-img img{transform:scale(1.03)}
+.city h4{font-weight:600;font-size:1.28rem;color:var(--text-primary);margin-top:14px}
+.city .pop{margin-top:5px}
+.city p{font-size:0.97rem;line-height:1.65;color:var(--text-secondary);margin-top:9px}
+
+/* ── Materials ── */
+.material-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:28px}
+.material{display:flex;flex-direction:column}
+.material-cover{border-radius:var(--radius);overflow:hidden;border:1px solid var(--border);background:var(--grid);box-shadow:var(--shadow-sm)}
+.material-cover img{width:100%;height:auto;display:block}
+.material h3{font-weight:600;font-size:1.12rem;color:var(--text-primary);margin-top:14px}
+.material p{font-size:0.95rem;line-height:1.6;color:var(--text-secondary);margin-top:5px;flex:1}
+
+/* Outlined so the label always sits on the page background: white-on-accent
+   measured 2.6–3.2:1 against the lighter series colours. */
 .btn{
-  padding:10px 14px;border-radius:9px;border:1px solid var(--border);
-  background:var(--field);color:var(--text-primary);cursor:pointer;
-  font-size:0.88rem;font-weight:600;font-family:inherit;
-  transition:background 0.18s, border-color 0.18s, color 0.18s;
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  font-family:var(--font-text);font-size:0.92rem;font-weight:600;
+  color:var(--text-primary);background:transparent;
+  border:1px solid var(--border);border-radius:var(--radius-sm);
+  padding:8px 15px;cursor:pointer;text-decoration:none;
+  transition:background 0.18s, border-color 0.18s;
 }
-.btn:hover{background:var(--section);color:#fff;border-color:transparent}
-.btn:disabled{opacity:0.5;cursor:default}
-.btn:disabled:hover{background:var(--field);color:var(--text-primary);border-color:var(--border)}
+.btn:hover{background:var(--section-soft);border-color:var(--section)}
+.btn:disabled{opacity:0.55;cursor:default}
+.btn:disabled:hover{background:transparent;border-color:var(--border)}
+.btn-sm{padding:4px 11px;font-size:0.84rem}
+.material .btn{margin-top:14px;align-self:flex-start}
 
-.magic-card{padding-right:24px}
-.magic-card .magic-meta{
-  margin-bottom:8px;font-size:0.8rem;font-weight:600;letter-spacing:0.03em;
-  color:var(--section);text-transform:uppercase;
-}
-.magic-details{
-  margin-top:12px;padding-top:12px;border-top:1px solid var(--border);
-}
-.magic-details .muted{white-space:pre-wrap}
-.magic-card .btn{position:absolute;right:16px;top:16px;padding:6px 12px;font-size:0.8rem}
+/* ── Map ── */
+.map-figure{margin:0}
+.map-figure img{width:100%;height:auto;display:block;border-radius:var(--radius);border:1px solid var(--border)}
+.map-figure figcaption{margin-top:14px}
 
-/* ── Muted text ── */
-.muted{color:var(--muted);font-size:0.9rem;line-height:1.6}
+/* ── Characters ── */
+.char-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:26px}
+.char-portrait{
+  width:88px;height:88px;border-radius:50%;overflow:hidden;
+  border:1px solid var(--border);background:var(--grid);
+}
+.char-portrait img{width:100%;height:100%;object-fit:cover;display:block}
+.char-monogram{
+  width:100%;height:100%;display:grid;place-items:center;
+  font-family:var(--font-display);font-size:2.6rem;font-weight:600;line-height:1;
+  color:var(--section-ink);background:var(--grid);
+}
+.char h3{font-weight:600;font-size:1.24rem;color:var(--text-primary);margin-top:14px}
+.char .player{margin-top:4px}
+.char p{font-size:0.97rem;line-height:1.65;color:var(--text-secondary);margin-top:9px}
 
-/* ── City Cards ── */
-.city-grid{grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:22px}
-.city-card{
-  padding:0;
-  display:flex;
-  flex-direction:column;
-  overflow:hidden;
+/* ── Magics ── */
+.magics-bar{
+  display:flex;gap:10px;align-items:center;flex-wrap:wrap;
+  padding-bottom:18px;margin-bottom:22px;border-bottom:1px solid var(--border);
 }
-.city-card::before{top:0;height:0}
-.city-card-img{
-  width:100%;
-  height:190px;
-  overflow:hidden;
-  position:relative;
-  background:var(--grid);
+.search-input,.select-filter{
+  font-family:var(--font-text);font-size:0.95rem;color:var(--text-primary);
+  background:var(--field);border:1px solid var(--border);
+  border-radius:var(--radius-sm);padding:8px 12px;
+  transition:border-color 0.18s;
 }
-.city-card-img::after{
-  content:'';
-  position:absolute;
-  bottom:0;left:0;right:0;
-  height:50%;
-  background:linear-gradient(to top, rgba(11,11,11,0.28), transparent);
-  pointer-events:none;
+.search-input{flex:1;min-width:190px}
+.search-input::placeholder{color:var(--muted);font-style:italic}
+.search-input:focus,.select-filter:focus{outline:none;border-color:var(--section);box-shadow:0 0 0 3px var(--section-soft)}
+.select-filter{cursor:pointer}
+.magics-count{font-family:var(--font-mono);font-size:0.74rem;color:var(--muted);margin-left:auto;font-variant-numeric:tabular-nums}
+.spell-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:2px;margin-inline:-17px}
+.spell{
+  padding:15px 17px;border-radius:var(--radius-sm);
+  border:1px solid transparent;transition:background 0.16s, border-color 0.16s;
 }
-.city-card-img img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  transition:transform 0.55s ease;
+.spell:hover{background:var(--surface-1);border-color:var(--border)}
+.spell-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.spell h3{font-weight:600;font-size:1.1rem;color:var(--text-primary);line-height:1.3}
+.spell .level{margin-top:5px}
+/* The eight schools of magic take the eight series colours. */
+.spell[data-school="abjuration"]   {--school:var(--series-1)}
+.spell[data-school="conjuration"]  {--school:var(--series-2)}
+.spell[data-school="divination"]   {--school:var(--series-3)}
+.spell[data-school="transmutation"]{--school:var(--series-4)}
+.spell[data-school="illusion"]     {--school:var(--series-5)}
+.spell[data-school="necromancy"]   {--school:var(--series-6)}
+.spell[data-school="enchantment"]  {--school:var(--series-7)}
+.spell[data-school="evocation"]    {--school:var(--series-8)}
+.spell[data-school] .level::before{
+  content:'';display:inline-block;width:7px;height:7px;border-radius:50%;
+  background:var(--school);margin-right:7px;vertical-align:1px;
 }
-.city-card:hover .city-card-img img{
-  transform:scale(1.05);
-}
-.city-card-body{
-  padding:18px 22px 22px;
-  display:flex;
-  flex-direction:column;
-  gap:10px;
-}
-.city-card-body h3{
-  font-size:1.3rem;
-  margin-bottom:0;
-}
-.city-card-meta{
-  display:flex;
-  flex-wrap:wrap;
-  gap:8px;
-}
-.city-tag{
-  display:inline-block;
-  padding:4px 12px;
-  border-radius:999px;
-  font-size:0.75rem;
-  font-weight:600;
-  letter-spacing:0.02em;
-}
-.city-tag-pop{
-  background:var(--section-soft);
-  color:var(--section);
-  border:1px solid var(--border);
-}
-.city-card-body p{
-  color:var(--text-secondary);
-  line-height:1.7;
-  font-size:0.92rem;
-  margin-top:2px;
-}
+.spell-details{margin-top:11px;padding-top:11px;border-top:1px solid var(--border)}
+.spell-details:empty{display:none}
+.spell-details p{font-size:0.95rem;line-height:1.65;color:var(--text-secondary);white-space:pre-wrap}
+.spell-details .classes{margin-top:9px}
+.magics-status{padding:22px 0;font-family:var(--font-mono);font-size:0.76rem;color:var(--muted)}
+.empty-state{padding:40px 0;font-size:1.1rem;font-style:italic;color:var(--muted)}
 
-/* ── Card entrance animation ── */
-@keyframes cardIn{
-  from{opacity:0;transform:translateY(14px)}
-  to{opacity:1;transform:translateY(0)}
-}
-.card-animate{
-  animation:cardIn 0.4s cubic-bezier(0.22,0.61,0.36,1) both;
-}
-@media (prefers-reduced-motion: reduce){
-  .card-animate{animation:none}
-  *{transition:none !important}
-}
+/* ── Entrance ── */
+@keyframes riseIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.rise{animation:riseIn 0.45s cubic-bezier(0.22,0.61,0.36,1) both}
 
-/* ── Topbar actions (nav + toggles) ── */
-.topbar-actions{display:flex;align-items:center;gap:10px}
-
-/* ── Theme toggle ── */
-.theme-toggle{
+/* ── Icon buttons ── */
+.icon-btn{
   display:inline-flex;align-items:center;justify-content:center;
-  background:var(--surface-1);border:1px solid var(--border);color:var(--text-primary);
-  cursor:pointer;padding:8px;border-radius:9px;
-  transition:background 0.2s, color 0.2s, transform 0.2s, box-shadow 0.2s;
+  width:36px;height:36px;flex-shrink:0;
+  background:transparent;border:1px solid var(--border);border-radius:var(--radius-sm);
+  color:var(--text-primary);cursor:pointer;transition:background 0.18s;
 }
-.theme-toggle:hover{background:var(--grid);transform:translateY(-1px);box-shadow:var(--shadow-sm)}
-.theme-toggle:active{transform:translateY(0)}
-.theme-toggle svg{display:block;width:18px;height:18px}
-/* default (dark) → offer sun; light → offer moon */
-.theme-toggle .icon-moon{display:none}
-.theme-toggle .icon-sun{display:block}
-:root[data-theme="light"] .theme-toggle .icon-sun{display:none}
-:root[data-theme="light"] .theme-toggle .icon-moon{display:block}
+.icon-btn:hover{background:var(--grid)}
+.icon-btn svg{width:17px;height:17px;display:block}
+/* These must out-specify `.icon-btn svg` above, which also sets display. */
+.icon-btn .icon-moon{display:none}
+:root[data-theme="light"] .icon-btn .icon-sun{display:none}
+:root[data-theme="light"] .icon-btn .icon-moon{display:block}
+.menu-toggle{display:none}
 
-/* ── Hamburger button ── */
-.menu-toggle{
-  display:none;
-  background:none;border:1px solid var(--border);color:var(--text-primary);cursor:pointer;
-  padding:7px;border-radius:9px;
-  transition:background 0.2s;
-}
-.menu-toggle:hover{background:var(--grid)}
-.menu-toggle svg{display:block}
-
-/* ── Mobile nav overlay ── */
+/* ── Mobile nav ── */
 .mobile-nav{
-  display:none;
-  position:fixed;inset:0;z-index:100;
+  display:none;position:fixed;inset:0;z-index:100;
   background:var(--overlay-bg);
-  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
-  flex-direction:column;align-items:center;justify-content:center;gap:4px;
-  padding:24px;
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:24px;
 }
 .mobile-nav.open{display:flex}
 .mobile-nav a{
-  display:block;
-  color:var(--text-secondary);
-  text-decoration:none;
-  font-family:'Fraunces',serif;
-  font-size:1.4rem;
-  font-weight:600;
-  letter-spacing:0.01em;
-  padding:12px 32px;
-  border-radius:12px;
-  text-align:center;
-  width:100%;max-width:300px;
-  transition:all 0.2s ease;
+  display:block;color:var(--text-secondary);text-decoration:none;
+  font-family:var(--font-display);font-size:2.05rem;font-weight:600;line-height:1.1;
+  padding:9px 32px;border-radius:var(--radius);text-align:center;
+  width:100%;max-width:300px;transition:background 0.18s, color 0.18s;
 }
-.mobile-nav a:hover,
-.mobile-nav a.active{
-  color:var(--text-primary);
-  background:var(--grid);
-}
-.mobile-nav .close-btn{
-  position:absolute;top:20px;right:20px;
-  background:none;border:1px solid var(--border);color:var(--text-secondary);cursor:pointer;
-  padding:8px;border-radius:9px;
-  transition:color 0.2s, background 0.2s;
-}
-.mobile-nav .close-btn:hover{color:var(--text-primary);background:var(--grid)}
-.mobile-nav .close-btn svg{display:block}
+.mobile-nav a:hover,.mobile-nav a.active{color:var(--text-primary);background:var(--grid)}
+.mobile-nav .close-btn{position:absolute;top:18px;right:18px}
 
-/* ── Responsive: tablet ── */
+/* ── Responsive ── */
 @media(max-width:900px){
   .sidebar{display:none}
-  .menu-toggle{display:block}
+  .menu-toggle{display:inline-flex}
   .topnav{display:none}
-  .topbar{padding:16px 20px}
-  #page-title{font-size:1.35rem}
-  .content{padding:22px 20px 48px}
-  .grid{grid-template-columns:repeat(auto-fill,minmax(250px,1fr))}
-  .city-grid{grid-template-columns:repeat(auto-fill,minmax(260px,1fr))}
+  .topbar{padding:12px 18px}
+  #page-title{font-size:1.45rem}
+  .content{padding:28px 18px 64px}
+  .era-item{grid-template-columns:1fr;gap:7px}
+  .era-year{padding-top:0}
+}
+@media(max-width:600px){
+  .content{padding:22px 16px 56px}
+  .masthead{margin-bottom:36px;padding-bottom:24px}
+  .masthead-body{display:block;position:relative}
+  .masthead h2{padding-right:84px}
+  .masthead .premise{font-size:1.04rem}
+  .burn{position:absolute;top:2px;right:4px;width:68px;margin:0}
+  .god-grid,.spell-grid{margin-inline:-12px}
+  .god,.spell{padding-inline:12px}
+  .lede{font-size:1.04rem;margin-bottom:26px}
+  .group-head h3{font-size:1.45rem}
+  .entry{padding-left:46px;padding-bottom:46px}
+  .chronicle::before{left:14px}
+  .entry-marker{width:30px}
+  .entry-mark{width:30px;height:30px}
+  .entry-mark svg{width:16px;height:16px}
+  .entry h3{font-size:1.75rem}
+  .prose{font-size:1.02rem}
+  .city-grid,.material-grid,.char-grid,.god-grid,.spell-grid{grid-template-columns:1fr}
+  .magics-bar{flex-direction:column;align-items:stretch}
+  .search-input,.select-filter{width:100%}
+  .magics-count{margin-left:0}
+  .material .btn{align-self:stretch}
 }
 
-/* ── Responsive: phone ── */
-@media(max-width:600px){
-  .topbar{padding:14px 16px}
-  #page-title{font-size:1.2rem}
-  .content{padding:18px 14px 40px}
-  .grid,
-  .city-grid{grid-template-columns:1fr}
-  .card{padding:18px;border-radius:12px}
-  .card h3{font-size:1.1rem}
-  .city-card{padding:0}
-  .city-card-img{height:170px}
-  .city-card-body{padding:16px 18px 18px}
-  .magics-controls{flex-direction:column;gap:8px}
-  .magics-controls .search-input{min-width:0;width:100%}
-  .magics-controls .select-filter{width:100%}
-  .magics-controls .btn{width:100%}
-  .material-link{width:100%;justify-content:center}
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation-duration:0.01ms !important;animation-iteration-count:1 !important;transition-duration:0.01ms !important}
 }
